@@ -1,0 +1,132 @@
+language: c++
+
+script: 
+  - scons build/X86/gem5.opt --ignore-style -j3
+  - scons build/X86/gem5.fast --ignore-style -j3
+
+dist: "trusty"
+
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode8.3
+
+    # works on Precise and Trusty
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-4.9
+            - swig
+            - libprotobuf-dev
+            - python-protobuf
+            - protobuf-compiler
+            - libgoogle-perftools-dev
+      env:
+         - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+
+    # works on Precise and Trusty
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+            - swig
+            - libprotobuf-dev
+            - python-protobuf
+            - protobuf-compiler
+            - libgoogle-perftools-dev
+      env:
+         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
+
+    # works on Precise and Trusty
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+            - swig
+            - libprotobuf-dev
+            - python-protobuf
+            - protobuf-compiler
+            - libgoogle-perftools-dev
+      env:
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
+
+    # works on Precise and Trusty
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.8
+          packages:
+            - clang-3.8
+            - swig
+            - libprotobuf-dev
+            - python-protobuf
+            - protobuf-compiler
+            - libgoogle-perftools-dev
+      env:
+        - MATRIX_EVAL="CC=clang-3.8 && CXX=clang++-3.8"
+
+    # works on Trusty
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-trusty-3.9
+          packages:
+            - clang-3.9
+            - swig
+            - libprotobuf-dev
+            - python-protobuf
+            - protobuf-compiler
+            - libgoogle-perftools-dev
+      env:
+        - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
+
+    # works on Trusty
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-trusty-4.0
+          packages:
+            - clang-4.0
+            - swig
+            - libprotobuf-dev
+            - python-protobuf
+            - protobuf-compiler
+            - libgoogle-perftools-dev
+      env:
+        - MATRIX_EVAL="CC=clang-4.0 && CXX=clang++-4.0"
+
+    # works on Trusty
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-trusty
+          packages:
+            - clang-5.0
+            - swig
+            - libprotobuf-dev
+            - python-protobuf
+            - protobuf-compiler
+            - libgoogle-perftools-dev
+      env:
+        - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update           ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install scons    ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install swig     ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install google-perftools ;fi
+  - eval "${MATRIX_EVAL}"
